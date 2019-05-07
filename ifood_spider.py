@@ -1,6 +1,7 @@
 import json
 import scrapy
 
+BASE_IFOOD_URL = 'https://www.ifood.com.br/delivery/'
 BASE_AVATAR_URL = 'https://static-images.ifood.com.br/image/upload/f_auto,t_high/logosgde/'
 BASE_URL = 'https://marketplace.ifood.com.br/v1/merchants?latitude=-23.19529&longitude=-45.90321&channel=IFOOD'
 
@@ -14,6 +15,7 @@ class Restaurant(scrapy.Item):
     distance = scrapy.Field()
     category = scrapy.Field()
     avatar = scrapy.Field()
+    url = scrapy.Field()
 
     @staticmethod
     def parse_avatar(item):
@@ -58,4 +60,5 @@ class IfoodSpider(scrapy.Spider):
                 'distance': item['distance'],
                 'category': item['mainCategory']['name'],
                 'avatar': Restaurant.parse_avatar(item),
+                'url': f"{BASE_IFOOD_URL}{item['slug']}/{item['id']}",
             })
